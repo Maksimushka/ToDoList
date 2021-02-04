@@ -8,15 +8,15 @@ export type TaskType = {
     isDone: boolean
 }
 type PropsType = {
-    id: string
     title: string
+    id: string
     tasks: Array<TaskType>
-    removeTask: (id: string, todoListID: string) => void
-    removeTodolist: (id: string) => void
-    changeFilter: (value: FilterValuesType, todoListID: string) => void
-    addTask: (title: string, todoListID: string) => void
-    changeStatus: (taskId: string, isDone: boolean, todoListID: string) => void
-    filter: string
+    removeTask: (id: string, todolistID: string) => void
+    removeTodoList: (todolistID: string) => void
+    changeFilter: (value: FilterValuesType, todolistID: string) => void
+    addTask: (title: string, todolistID: string) => void
+    changeStatus: (taskId: string, isDone: boolean, todolistID: string) => void
+    filter: FilterValuesType
 }
 
 export function TodoList(props: PropsType) {
@@ -39,15 +39,13 @@ export function TodoList(props: PropsType) {
     const onAllClickHandler = () => { props.changeFilter("all", props.id) }
     const onActiveClickHandler = () => { props.changeFilter("active", props.id) }
     const onCompletedClickHandler = () => { props.changeFilter("completed", props.id) }
-    const deleteTodoList = () => {
-        props.removeTodolist(props.id)
-    }
+    const onRemoveTodolist = () => { props.removeTodoList(props.id) }
 
     return (
     <div className={s.todolist}>
         <h3 className={s.typeTasks}>
             {props.title}
-            <button onClick={ deleteTodoList } className={s.todolistDelete}>x</button>
+            <button onClick={ onRemoveTodolist } className={s.todolistDelete}>x</button>
         </h3>
         <div className={s.input}>
             <input value={title}
