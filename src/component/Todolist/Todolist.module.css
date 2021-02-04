@@ -1,0 +1,138 @@
+.todolist {
+    font-size: 16px;
+    width: 300px;
+    height: 100%;
+
+    box-shadow: 0 0 3px silver;
+    background-color: #ebecf0;
+    border-radius: 7px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+.typeTasks {
+    font-size: 18px;
+    display: block;
+    text-align: center;
+    margin: 0 0 20px 0;
+}
+
+.todolistDelete {
+    margin-left: 10px;
+    background-color: white;
+    width: 20px;
+    height: 20px;
+    text-align: center;
+    line-height: 10px;
+    border-radius: 5px;
+}
+
+.tasks {
+    margin-left: 13px;
+}
+
+.task {
+    background-color: white;
+    margin-bottom: 7px;
+    position: relative;
+    border-radius: 3px;
+    padding-right: 10px;
+
+    width: 250px;
+    height: 25px;
+    box-shadow: 0 1px 1px #b2b9c5;
+}
+.taskDone {
+    background-color: white;
+    margin-bottom: 7px;
+    position: relative;
+    border-radius: 3px;
+    padding-right: 10px;
+    opacity: 0.5;
+
+    width: 250px;
+    height: 25px;
+    box-shadow: 0 1px 1px #b2b9c5;
+}
+
+.checkbox {
+    position: absolute;
+    top: 6px;
+    left: 4px;
+}
+
+.title {
+    position: absolute;
+    top: 4px;
+    left: 22px;
+}
+
+.taskButton {
+    background-color: white;
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    text-align: center;
+    top: 3px;
+    right: -28px;
+    line-height: 10px;
+    border-radius: 5px;
+}
+
+.input {
+    width: 280px;
+    margin: 0 auto 15px;
+}
+
+.error {
+    margin-top: 10px;
+    margin-left: 10px;
+    color: red;
+}
+
+.inputDefault {
+    border: 1px solid #b2b9c5;
+    height: 35px;
+    width: 240px;
+    border-radius: 5px;
+    font-size: 16px;
+    padding-left: 7px;
+}
+
+.inputError {
+    border: red 1px solid;
+    height: 35px;
+    width: 240px;
+    border-radius: 5px;
+    font-size: 16px;
+    padding-left: 7px;
+}
+
+.input button {
+    border-radius: 5px;
+    background-color: white;
+    margin-left: 5px;
+    width: 30px;
+    height: 30px;
+}
+
+.filter {
+    margin-top: 17px;
+    display: flex;
+    justify-content: space-around;
+}
+
+.activeFilter {
+    background-color: #61dafb;
+    width: 75px;
+    height: 20px;
+    border-radius: 5px;
+}
+
+.filterElement {
+    width: 75px;
+    height: 20px;
+    border-radius: 5px;
+    background-color: white;
+
+}
