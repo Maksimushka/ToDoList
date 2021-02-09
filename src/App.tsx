@@ -3,6 +3,7 @@ import s from './App.module.css';
 
 import {v1} from 'uuid';
 import {TaskType, TodoList} from "./component/Todolist/Todolist";
+import {AddItemForm} from "./component/Todolist/AddItemForm";
 
 export type FilterValuesType = "all" | "active" | "completed";
 export type TodolistsType = {
@@ -59,6 +60,20 @@ function App() {
             setTasks({...tasks});
         }
     }
+    function changeTaskTitle(taskId: string, newValue: string, todolistID: string) {
+        let task = tasks[todolistID].find( t => t.id === taskId )
+        if (task) {
+            task.title = newValue
+            setTasks({...tasks})
+        }
+    }
+    function changeTodolistTitle(newValue: string, todolistID: string) {
+        let todolist = todolists.find( tl => tl.id === todolistID )
+        if (todolist) {
+            todolist.title = newValue
+            setTodolists([...todolists])
+        }
+    }
     function changeFilter(value: FilterValuesType, todolistID: string) {
         let todolist = todolists.find( tl => tl.id === todolistID )
         if (todolist) {
@@ -66,7 +81,13 @@ function App() {
             setTodolists([...todolists])
         }
     }
-    const removeTodoList = (id: string) => {
+    function addTodolist(title: string) {
+        let newTodolistID = v1()
+        let newTodolist: TodolistsType = { id: newTodolistID, title: title, filter: "all"}
+        setTodolists([newTodolist, ...todolists])
+        setTasks({ ...tasks, [newTodolistID]: [] })
+    }
+    function removeTodoList(id: string){
         const removedTodolist = todolists.filter( tl => tl.id !== id)
         if (removedTodolist) {
             setTodolists(removedTodolist)
@@ -76,30 +97,36 @@ function App() {
     }
 
     return (
-        <div className={s.App}>
-            {
-                todolists.map(tl => {
+        <div>
+            <AddItemForm addItem={ addTodolist } />
+            <div className={s.App}>
+                {
+                    todolists.map(tl => {
 
-                    let allTodolistTasks = tasks[tl.id]
-                    if (tl.filter === "active") { allTodolistTasks = allTodolistTasks.filter(t => !t.isDone); }
-                    if (tl.filter === "completed") { allTodolistTasks = allTodolistTasks.filter(t => t.isDone); }
+                        let allTodolistTasks = tasks[tl.id]
+                        if (tl.filter === "active") { allTodolistTasks = allTodolistTasks.filter(t => !t.isDone); }
+                        if (tl.filter === "completed") { allTodolistTasks = allTodolistTasks.filter(t => t.isDone); }
 
-                    return (
-                        <TodoList
-                            key={ tl.id }
-                            id={ tl.id }
-                            title={ tl.title }
-                            tasks={ allTodolistTasks }
-                            removeTask={ removeTask }
-                            removeTodoList={ removeTodoList }
-                            changeFilter={ changeFilter }
-                            addTask={ addTask }
-                            changeStatus={ changeStatus }
-                            filter={ tl.filter }/>
-                    )
-                })
-            }
+                        return (
+                            <TodoList
+                                key={ tl.id }
+                                id={ tl.id }
+                                title={ tl.title }
+                                tasks={ allTodolistTasks }
+                                removeTask={ removeTask }
+                                removeTodoList={ removeTodoList }
+                                changeFilter={ changeFilter }
+                                addTask={ addTask }
+                                changeStatus={ changeStatus }
+                                changeTaskTitle={ changeTaskTitle }
+                                changeTodolistTitle={ changeTodolistTitle }
+                                filter={ tl.filter }/>
+                        )
+                    })
+                }
+            </div>
         </div>
+
     );
 }
 

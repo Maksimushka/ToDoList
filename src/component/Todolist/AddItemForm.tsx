@@ -2,8 +2,7 @@ import s from "./Todolist.module.css";
 import React, {ChangeEvent, KeyboardEvent, useState} from "react";
 
 type AddItemFormType = {
-    addTask: (title: string, todolistID: string) => void
-    id: string
+    addItem: (title: string) => void
 }
 
 export function AddItemForm(props: AddItemFormType) {
@@ -11,9 +10,9 @@ export function AddItemForm(props: AddItemFormType) {
     let [title, setTitle] = useState<string>("")
     let [error, setError] = useState<string>("")
 
-    const addTask = () => {
+    const addItem = () => {
         if (title.trim() !== "") {
-            props.addTask(title, props.id)
+            props.addItem(title)
             setTitle("")
             setError("")
         } else {
@@ -22,7 +21,7 @@ export function AddItemForm(props: AddItemFormType) {
         }
     }
     const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => { setTitle(e.currentTarget.value) }
-    const onKeyPressHandler = (e: KeyboardEvent<HTMLInputElement>) => { if (e.charCode === 13)  addTask() }
+    const onKeyPressHandler = (e: KeyboardEvent<HTMLInputElement>) => { if (e.charCode === 13)  addItem() }
 
     return (
         <div className={s.input}>
@@ -31,7 +30,7 @@ export function AddItemForm(props: AddItemFormType) {
                    onKeyPress={ onKeyPressHandler }
                    className={ error ? s.inputError : s.inputDefault }
             />
-            <button onClick={ addTask }>Add</button>
+            <button onClick={ addItem }>Add</button>
             { error && <div className={s.error}>{error}</div> }
         </div>
     )
