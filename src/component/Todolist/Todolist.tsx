@@ -1,6 +1,7 @@
-import React, {ChangeEvent, KeyboardEvent, useState} from 'react';
+import React, {ChangeEvent} from 'react';
 import {FilterValuesType} from "../../App";
 import s from "./Todolist.module.css"
+import {AddItemForm} from "./AddItemForm";
 
 export type TaskType = {
     id: string
@@ -12,7 +13,7 @@ type PropsType = {
     id: string
     tasks: Array<TaskType>
     removeTask: (id: string, todolistID: string) => void
-    removeTodoList: (todolistID: string) => void
+    removeTodoList: (id: string) => void
     changeFilter: (value: FilterValuesType, todolistID: string) => void
     addTask: (title: string, todolistID: string) => void
     changeStatus: (taskId: string, isDone: boolean, todolistID: string) => void
@@ -21,21 +22,6 @@ type PropsType = {
 
 export function TodoList(props: PropsType) {
 
-    let [title, setTitle] = useState<string>("")
-    let [error, setError] = useState<string>("")
-
-    const addTask = () => {
-        if (title.trim() !== "") {
-            props.addTask(title, props.id)
-            setTitle("")
-            setError("")
-        } else {
-            setError("Please, enter your task!")
-            setTitle("")
-        }
-    }
-    const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => { setTitle(e.currentTarget.value) }
-    const onKeyPressHandler = (e: KeyboardEvent<HTMLInputElement>) => { if (e.charCode === 13)  addTask() }
     const onAllClickHandler = () => { props.changeFilter("all", props.id) }
     const onActiveClickHandler = () => { props.changeFilter("active", props.id) }
     const onCompletedClickHandler = () => { props.changeFilter("completed", props.id) }
@@ -47,15 +33,7 @@ export function TodoList(props: PropsType) {
             {props.title}
             <button onClick={ onRemoveTodolist } className={s.todolistDelete}>x</button>
         </h3>
-        <div className={s.input}>
-            <input value={title}
-                   onChange={ onChangeHandler }
-                   onKeyPress={ onKeyPressHandler }
-                   className={ error ? s.inputError : s.inputDefault }
-            />
-            <button onClick={ addTask }>Add</button>
-            { error && <div className={s.error}>{error}</div> }
-        </div>
+        <AddItemForm addTask={ props.addTask } id={ props.id } />
         <div className={s.tasks}>
             { props.tasks.map((task: TaskType) => {
                     const onRemoveHandler = () => { props.removeTask(task.id, props.id) }
@@ -82,3 +60,4 @@ export function TodoList(props: PropsType) {
     </div>
     )
 }
+
