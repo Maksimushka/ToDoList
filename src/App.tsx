@@ -60,18 +60,18 @@ function App() {
             setTasks({...tasks});
         }
     }
-    function changeTaskTitle(taskId: string, newValue: string, todolistID: string) {
-        let task = tasks[todolistID].find( t => t.id === taskId )
-        if (task) {
-            task.title = newValue
-            setTasks({...tasks})
-        }
-    }
-    function changeTodolistTitle(newValue: string, todolistID: string) {
+    function changeTodolistTitle(title: string, todolistID: string) {
         let todolist = todolists.find( tl => tl.id === todolistID )
         if (todolist) {
-            todolist.title = newValue
-            setTodolists([...todolists])
+            todolist.title = title
+            setTodolists(todolists)
+        }
+    }
+    function changeTaskTitle(title: string, taskId: string, todolistID: string) {
+        let task = tasks[todolistID].find( t => t.id === taskId )
+        if (task) {
+            task.title = title
+            setTasks({...tasks})
         }
     }
     function changeFilter(value: FilterValuesType, todolistID: string) {
@@ -81,12 +81,6 @@ function App() {
             setTodolists([...todolists])
         }
     }
-    function addTodolist(title: string) {
-        let newTodolistID = v1()
-        let newTodolist: TodolistsType = { id: newTodolistID, title: title, filter: "all"}
-        setTodolists([newTodolist, ...todolists])
-        setTasks({ ...tasks, [newTodolistID]: [] })
-    }
     function removeTodoList(id: string){
         const removedTodolist = todolists.filter( tl => tl.id !== id)
         if (removedTodolist) {
@@ -95,10 +89,20 @@ function App() {
             setTasks({...tasks})
         }
     }
+    function addTodolist(title: string) {
+        let newTodolistID = v1()
+        let newTodolist: TodolistsType = { id: newTodolistID, title: title, filter: "all"}
+        setTodolists([newTodolist,...todolists])
+        setTasks({
+            ...tasks,
+            [newTodolistID]: []
+        })
+    }
+
 
     return (
         <div>
-            <AddItemForm addItem={ addTodolist } />
+            <AddItemForm addItem={addTodolist} />
             <div className={s.App}>
                 {
                     todolists.map(tl => {
