@@ -1,5 +1,6 @@
 import React, {ChangeEvent, useState} from 'react';
 import s from "./../Todolist/Todolist.module.css"
+import {TextField} from "@material-ui/core";
 
 type EditableSpanType = {
     value: string
@@ -22,11 +23,9 @@ const EditableSpan = (props: EditableSpanType) => {
     }
 
 
-    return (
-        <span>
-            {
-                editMode
-                ? <input
+    return editMode
+                ? <TextField
+                        variant={'outlined'}
                         value={ title }
                         className={s.inputTask}
                         autoFocus
@@ -34,9 +33,6 @@ const EditableSpan = (props: EditableSpanType) => {
                         onBlur={ editSpan }
                     />
                 : <span className={s.title} onDoubleClick={ editInput } >{ title }</span>
-            }
-        </span>
-    );
 };
 
 export default EditableSpan;
