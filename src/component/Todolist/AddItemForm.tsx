@@ -1,29 +1,35 @@
 import s from "./Todolist.module.css";
 import React, {ChangeEvent, KeyboardEvent, useState} from "react";
-import {Button, IconButton, TextField} from "@material-ui/core";
+import {IconButton, TextField} from "@material-ui/core";
 import {AddBox} from "@material-ui/icons";
 
 type AddItemFormType = {
     addItem: (title: string) => void
 }
 
-export function AddItemForm(props: AddItemFormType) {
+export const AddItemForm = React.memo((props: AddItemFormType) => {
+
+    console.log('AddItemForm rendering')
 
     let [title, setTitle] = useState<string>("")
-    let [error, setError] = useState<string>("")
+    let [error, setError] = useState<string | null>(null)
 
     const addItem = () => {
         if (title.trim() !== "") {
             props.addItem(title)
             setTitle("")
-            setError("")
+            setError(null)
         } else {
             setError("Please, enter your task!")
             setTitle("")
         }
     }
     const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => { setTitle(e.currentTarget.value) }
-    const onKeyPressHandler = (e: KeyboardEvent<HTMLInputElement>) => { if (e.charCode === 13)  addItem() }
+    const onKeyPressHandler = (e: KeyboardEvent<HTMLInputElement>) => {
+        if (e.charCode === 13) {
+            addItem()
+        }
+    }
 
     return (
         <div className={s.input}>
@@ -41,4 +47,4 @@ export function AddItemForm(props: AddItemFormType) {
             </IconButton>
         </div>
     )
-}
+})

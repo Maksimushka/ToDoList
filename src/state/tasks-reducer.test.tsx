@@ -49,7 +49,7 @@ test('user reducer should change task title', () => {
     // Data
     let newTitle = "Java"
     // Action
-    const endState = tasksReducer(tasks, changeTaskTitleAC(tasks[todolistId1][0].id, newTitle, todolistId1))
+    const endState = tasksReducer(tasks, changeTaskTitleAC(newTitle, tasks[todolistId1][0].id, todolistId1))
     // Result
     expect(endState[todolistId1][0].title).toBe(newTitle)
     expect(endState[todolistId1][1].title !== newTitle).toBe(true)
