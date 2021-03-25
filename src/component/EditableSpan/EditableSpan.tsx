@@ -2,7 +2,7 @@ import React, {ChangeEvent, useState} from 'react';
 import s from "./../Todolist/Todolist.module.css"
 import {TextField} from "@material-ui/core";
 
-type EditableSpanType = {
+export type EditableSpanType = {
     value: string
     onChange: (title: string) => void
 }

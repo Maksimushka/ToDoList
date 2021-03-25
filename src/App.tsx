@@ -8,8 +8,8 @@ import {
     changeTodolistFilterAC,
     changeTodolistTitleAC,
     removeTodolistAC
-} from './state/todolists-reducer';
-import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC} from './state/tasks-reducer';
+} from './redux/reducers/todolists-reducer';
+import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC} from './redux/reducers/tasks-reducer';
 import {useDispatch, useSelector} from 'react-redux';
 import {RootStoreType} from './redux/store';
 
@@ -22,34 +22,6 @@ export type TodolistType = {
 export type TasksStateType = {
     [key: string]: Array<TaskType>
 }
-
-
-
-// const removeTask = (id: string, todolistId: string) => {
-//     dispatch(removeTaskAC(id, todolistId))
-// }
-// const addTask = (title: string, todolistId: string) => {
-//     dispatch(addTaskAC(title, todolistId))
-// }
-// const changeStatus = (id: string, isDone: boolean, todolistId: string) => {
-//     dispatch(changeTaskStatusAC(id, isDone, todolistId))
-// }
-// const changeTaskTitle = (newTitle: string, id: string, todolistId: string) => {
-//     dispatch(changeTaskTitleAC(newTitle, id, todolistId))
-// }
-//
-// const removeTodolist = (id: string) => {
-//     dispatch(removeTodolistAC(id))
-// }
-// const changeFilter = (value: FilterValuesType, todolistId: string) => {
-//     dispatch(changeTodolistFilterAC(todolistId,value))
-// }
-// const changeTodolistTitle = (title: string, id: string) => {
-//     dispatch(changeTodolistTitleAC(id, title))
-// }
-// const addTodolist = (title: string) => {
-//     dispatch(addTodolistAC(title))
-// }
 
 function App() {
     const dispatch = useDispatch()
@@ -105,8 +77,8 @@ function App() {
                         todoLists.map(tl => {
                             let tasksForTodolist = tasks[tl.id];
 
-                            return <Grid style={{marginRight: "35px", marginBottom:'35px'}} item>
-                                <Paper style={{padding: "10px"}}>
+                            return <Grid key={`grid/${tl.id}`} style={{marginRight: "35px", marginBottom:'35px'}} item>
+                                <Paper key={`paper/${tl.id}`} style={{padding: "10px"}}>
                             <TodoList
                                 key={tl.id}
                                 id={tl.id}
