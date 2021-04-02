@@ -1,0 +1,54 @@
+import axios from 'axios';
+
+const setting = {
+    withCredentials: true,
+    headers: {
+        'API-KEY': '0c7f7a4d-ffbe-4143-a04f-3a08c1c80984'
+    }
+}
+
+type ResponseType<D = {}> = {
+    resultCode: number
+    messages: string[]
+    data: D
+}
+
+type TaskType = {
+    description: string
+    title: string
+    completed: boolean
+    status: number
+    priority: number
+    startDate: string
+    deadline: string
+    id: string
+    todoListId: string
+    order: number
+    addedDate: string
+}
+type GetTasksType = {
+    items: TaskType[]
+    totalCount: number
+    error: null
+}
+
+const instance = axios.create({
+    baseURL: 'https://social-network.samuraijs.com/api/1.1/todo-lists',
+    ...setting
+})
+
+export const tasksAPI = {
+    getTasks (todoId: string) {
+        return instance.get<GetTasksType>(`${todoId}/tasks`)
+    },
+    createTask (todoId: string, title: string) {
+        return instance.post<ResponseType<{item: TaskType}>>(`${todoId}/tasks`, {title})
+    },
+    updateTask (todoId: string, taskId: string, title: string) {
+        return instance.put<ResponseType<{item: TaskType}>>(`${todoId}/tasks/${taskId}`, {title})
+    },
+    deleteTask (todoId: string, taskId: string) {
+        return instance.delete<ResponseType>(`${todoId}/tasks/${taskId}`)
+    }
+}
+

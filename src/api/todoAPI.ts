@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-type ResponseType<D> = {
+type ResponseType<D = {}> = {
     resultCode: number
     messages: string[],
     data: D
@@ -27,10 +27,10 @@ const instance = axios.create({
 
 export const todoListAPI = {
     updateTodoList (todoId: string, title: string) {
-        return instance.put<ResponseType<{}>>(`todo-lists/${todoId}`, {title})
+        return instance.put<ResponseType>(`todo-lists/${todoId}`, {title})
     },
     deleteTodoList (todoId: string) {
-        return instance.delete<ResponseType<{}>>(`todo-lists/${todoId}`)
+        return instance.delete<ResponseType>(`todo-lists/${todoId}`)
     },
     createTodoList (title: string) {
         return instance.post<ResponseType<{item: TodoListType}>>('todo-lists', {title})

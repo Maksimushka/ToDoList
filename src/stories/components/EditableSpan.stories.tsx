@@ -3,7 +3,7 @@ import React from 'react';
 
 import {Meta, Story} from '@storybook/react/types-6-0';
 import {action} from '@storybook/addon-actions';
-import EditableSpan, {EditableSpanType} from '../component/EditableSpan/EditableSpan';
+import EditableSpan, {EditableSpanType} from '../../component/EditableSpan/EditableSpan';
 
 export default {
     title: 'Todolist/EditableSpan',
