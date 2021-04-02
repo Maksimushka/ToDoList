@@ -27,7 +27,7 @@ TaskIsDoneExample.args = {
     ...baseArgs,
     taskId: '1',
     title: 'JS',
-    isDone: true,
+    status: 2,
     todoId: 'todolistId1'
 }
 
@@ -36,7 +36,7 @@ TaskIsNotDoneExample.args = {
     ...baseArgs,
     taskId: '1',
     title: 'JS',
-    isDone: false,
+    status: 0,
     todoId: 'todolistId1'
 }
 

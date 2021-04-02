@@ -6,7 +6,7 @@ type ResponseType<D = {}> = {
     data: D
 }
 
-type TodoListType = {
+export type TodoListType = {
     title: string
     id: string
     order: number

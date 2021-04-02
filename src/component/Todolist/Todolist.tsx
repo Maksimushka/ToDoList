@@ -1,26 +1,22 @@
 import React, {useCallback} from 'react';
-import {FilterValuesType} from "../../App";
-import s from "./Todolist.module.css"
-import {AddItemForm} from "./AddItemForm";
-import EditableSpan from "../EditableSpan/EditableSpan";
-import {Button, IconButton} from "@material-ui/core";
-import { Delete } from "@material-ui/icons";
+import s from './Todolist.module.css'
+import {AddItemForm} from './AddItemForm';
+import EditableSpan from '../EditableSpan/EditableSpan';
+import {Button, IconButton} from '@material-ui/core';
+import {Delete} from '@material-ui/icons';
 import {Task} from '../Task/Task';
+import {TaskStatus, TaskType} from '../../api/tasksAPI';
+import {FilterValuesType} from '../../redux/reducers/todoListReducer/todolists-reducer';
 
-export type TaskType = {
-    id: string
-    title: string
-    isDone: boolean
-}
 type PropsType = {
     title: string
     id: string
-    tasks: Array<TaskType>
+    tasks: TaskType[]
     removeTask: (id: string, todolistID: string) => void
     removeTodoList: (id: string) => void
     changeFilter: (value: FilterValuesType, todolistID: string) => void
     addTask: (title: string, todolistID: string) => void
-    changeStatus: (taskId: string, isDone: boolean, todolistID: string) => void
+    changeStatus: (taskId: string, status: TaskStatus, todolistID: string) => void
     filter: FilterValuesType
     changeTodolistTitle: (title: string, todolistID: string) => void
     changeTaskTitle: (title: string, taskId: string, todolistID: string) => void
@@ -47,10 +43,10 @@ export const TodoList = React.memo(({
 
     let tasksForTodolist = tasks;
     if (filter === "active") {
-        tasksForTodolist = tasks.filter(t => !t.isDone);
+        tasksForTodolist = tasks.filter(t => t.status === TaskStatus.New);
     }
     if (filter === "completed") {
-        tasksForTodolist = tasks.filter(t => t.isDone);
+        tasksForTodolist = tasks.filter(t => t.status === TaskStatus.Completed);
     }
 
     return (
@@ -69,7 +65,7 @@ export const TodoList = React.memo(({
                 return <Task
                     taskId={task.id}
                     title={task.title}
-                    isDone={task.isDone}
+                    status={task.status}
                     todoId={id}
                     changeTaskTitle={changeTaskTitle}
                     changeStatus={changeStatus}
