@@ -2,12 +2,12 @@ import {
     AddTodolistActionType,
     ChangeTodolistFilterActionType,
     ChangeTodolistTitleActionType,
-    RemoveTodolistActionType
+    RemoveTodolistActionType, SetTodoListsActionType
 } from './todolist-actions';
 import {TodoListType} from '../../../api/todoAPI';
 
-type ActionsType = RemoveTodolistActionType | AddTodolistActionType
-    | ChangeTodolistFilterActionType | ChangeTodolistTitleActionType
+type ActionsType = RemoveTodolistActionType | AddTodolistActionType |
+    ChangeTodolistFilterActionType | ChangeTodolistTitleActionType | SetTodoListsActionType
 
 export type FilterValuesType = 'all' | 'active' | 'completed';
 export type TodoListBllType = TodoListType & {
@@ -39,6 +39,12 @@ export const todoListsReducer = (state: TodoListBllType[] = initialState, action
             let todolist = state.find(tl => tl.id === action.id)
             todolist!.filter = action.filter
             return [...state]
+        }
+        case 'SET_TODOLISTS': {
+            return action.todoLists.map(el => ({
+                ...el,
+                filter: 'all'
+            }))
         }
         default:
             return state

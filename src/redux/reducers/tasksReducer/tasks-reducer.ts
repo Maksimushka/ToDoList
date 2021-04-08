@@ -3,13 +3,18 @@ import {
     AddTaskActionType,
     ChangeTaskStatusActionType,
     ChangeTaskTitleActionType,
-    RemoveTaskActionType
+    RemoveTaskActionType, SetTasksStatusActionType
 } from './tasks-actions';
-import {AddTodolistActionType, RemoveTodolistActionType} from '../todoListReducer/todolist-actions';
+import {
+    AddTodolistActionType,
+    RemoveTodolistActionType,
+    SetTodoListsActionType
+} from '../todoListReducer/todolist-actions';
 import {TaskPriority, TaskStatus, TaskType} from '../../../api/tasksAPI';
 
 type ActionsType = RemoveTaskActionType | AddTaskActionType | ChangeTaskTitleActionType
     | ChangeTaskStatusActionType | AddTodolistActionType | RemoveTodolistActionType
+    | SetTodoListsActionType | SetTasksStatusActionType
 
 export type TasksStateType = {
     [key: string]: TaskType[]
@@ -20,11 +25,13 @@ const initialState: TasksStateType = {}
 export const tasksReducer = (state: TasksStateType = initialState, action: ActionsType): TasksStateType => {
     let copyState = {...state}
     switch (action.type) {
+        case 'SET_TASKS': {
+            copyState[action.todoId] = action.tasks
+            return copyState
+        }
         case 'ADD_TASK': {
-            let newTask = {id: v1(), title: action.title, status: TaskStatus.New, addedDate: '',
-                order: 0, deadline: '', priority: TaskPriority.Low, description: '', startDate: '', todoListId: action.todoID }
-            let tasks = copyState[action.todoID]
-            copyState[action.todoID] = [newTask, ...tasks]
+            let tasks = copyState[action.task.todoListId]
+            copyState[action.task.todoListId] = [action.task, ...tasks]
             return copyState
         }
         case 'REMOVE_TASK': {
@@ -52,6 +59,12 @@ export const tasksReducer = (state: TasksStateType = initialState, action: Actio
         }
         case 'REMOVE_TODOLIST': {
             delete copyState[action.id]
+            return copyState
+        }
+        case 'SET_TODOLISTS': {
+            action.todoLists.forEach(el => {
+                copyState[el.id] = []
+            })
             return copyState
         }
         default: {

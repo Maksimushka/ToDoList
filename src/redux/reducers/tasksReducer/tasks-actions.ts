@@ -1,5 +1,5 @@
 // TYPES
-import {TaskStatus} from '../../../api/tasksAPI';
+import {TaskStatus, TaskType} from '../../../api/tasksAPI';
 
 export type RemoveTaskActionType = {
     type: 'REMOVE_TASK'
@@ -8,8 +8,7 @@ export type RemoveTaskActionType = {
 }
 export type AddTaskActionType = {
     type: 'ADD_TASK'
-    todoID: string
-    title: string
+    task: TaskType
 }
 export type ChangeTaskTitleActionType = {
     type: 'CHANGE_TASK_TITLE'
@@ -23,27 +22,36 @@ export type ChangeTaskStatusActionType = {
     id: string
     status: TaskStatus
 }
+export type SetTasksStatusActionType = {
+    type: 'SET_TASKS'
+    tasks: TaskType[]
+    todoId: string
+}
 
 // ACTION CREATORS
-export const removeTaskAC = (id: string, todoID: string): RemoveTaskActionType => ({
+export const removeTaskAC = (todoID: string, id: string,): RemoveTaskActionType => ({
     type: 'REMOVE_TASK',
-    id: id,
-    todoID: todoID
+    id,
+    todoID
 })
-export const addTaskAC = (title: string, todoID: string): AddTaskActionType => ({
+export const addTaskAC = (task: TaskType): AddTaskActionType => ({
     type: 'ADD_TASK',
-    title: title,
-    todoID: todoID
+    task
 })
-export const changeTaskTitleAC = (title: string, id: string, todoID: string): ChangeTaskTitleActionType => ({
+export const changeTaskTitleAC = (todoID: string, id: string, title: string): ChangeTaskTitleActionType => ({
     type: 'CHANGE_TASK_TITLE',
-    id: id,
-    todoID: todoID,
-    title: title
+    id,
+    todoID,
+    title
 })
-export const changeTaskStatusAC = (id: string, status: TaskStatus, todoID: string): ChangeTaskStatusActionType => ({
+export const changeTaskStatusAC = (todoID: string, id: string, status: TaskStatus): ChangeTaskStatusActionType => ({
     type: 'CHANGE_TASK_STATUS',
     id,
     todoID,
     status
+})
+export const setTasksAC = (todoId: string, tasks: TaskType[]): SetTasksStatusActionType => ({
+    type: 'SET_TASKS',
+    todoId,
+    tasks
 })

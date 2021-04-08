@@ -1,4 +1,4 @@
-import React, {useCallback} from 'react';
+import React, {useCallback, useEffect} from 'react';
 import s from './Todolist.module.css'
 import {AddItemForm} from './AddItemForm';
 import EditableSpan from '../EditableSpan/EditableSpan';
@@ -7,6 +7,8 @@ import {Delete} from '@material-ui/icons';
 import {Task} from '../Task/Task';
 import {TaskStatus, TaskType} from '../../api/tasksAPI';
 import {FilterValuesType} from '../../redux/reducers/todoListReducer/todolists-reducer';
+import {getTasksTC} from '../../redux/reducers/tasksReducer/tasks-thunk';
+import {useDispatch} from 'react-redux';
 
 type PropsType = {
     title: string
@@ -22,12 +24,16 @@ type PropsType = {
     changeTaskTitle: (title: string, taskId: string, todolistID: string) => void
 }
 
-export const TodoList = React.memo(({
-                                        tasks, title, id, addTask, removeTodoList,
-                                        changeStatus, changeFilter , changeTaskTitle,
-                                        changeTodolistTitle, filter, removeTask
-                                    }: PropsType) => {
-    console.log('TodoList rendering')
+export const TodoList = React.memo((props: PropsType) => {
+    const {
+        tasks, title, id, addTask, removeTodoList,
+        changeStatus, changeFilter , changeTaskTitle,
+        changeTodolistTitle, filter, removeTask
+    } = props
+    const dispatch = useDispatch()
+    useEffect(() => {
+        dispatch(getTasksTC(id))
+    }, [])
 
     const onAllClickHandler = useCallback(() => changeFilter("all", id), [changeFilter, id])
     const onActiveClickHandler = useCallback(() => changeFilter("active", id), [changeFilter, id])

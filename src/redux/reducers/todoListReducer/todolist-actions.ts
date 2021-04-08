@@ -1,5 +1,5 @@
 import {v1} from 'uuid';
-import {FilterValuesType} from './todolists-reducer';
+import {FilterValuesType, TodoListBllType} from './todolists-reducer';
 
 // TYPES
 export type RemoveTodolistActionType = {
@@ -20,6 +20,10 @@ export type ChangeTodolistFilterActionType = {
     type: 'CHANGE_TODOLIST_FILTER'
     id: string
     filter: FilterValuesType
+}
+export type SetTodoListsActionType = {
+    type: 'SET_TODOLISTS'
+    todoLists: TodoListBllType[]
 }
 
 // ACTION CREATORS
@@ -42,3 +46,8 @@ export const changeTodolistFilterAC = (id: string, filter: FilterValuesType): Ch
     id,
     filter
 })
+export const setTodoListAC = (todoLists: TodoListBllType[]): SetTodoListsActionType => ({
+    type: 'SET_TODOLISTS',
+    todoLists
+})
+

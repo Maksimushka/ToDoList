@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from "axios"
 
 type ResponseType<D = {}> = {
     resultCode: number
@@ -36,6 +36,6 @@ export const todoListAPI = {
         return instance.post<ResponseType<{item: TodoListType}>>('todo-lists', {title})
     },
     getTodoLists () {
-        return instance.get<Array<TodoListType>>('todo-lists')
+        return instance.get<TodoListType[]>('todo-lists')
     }
 }

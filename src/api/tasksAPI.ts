@@ -28,7 +28,6 @@ export type TaskType = {
 type UpdateTaskModelType = {
     description: string
     title: string
-    completed: boolean
     status: number
     priority: number
     startDate: string
