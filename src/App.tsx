@@ -10,10 +10,10 @@ import {FilterValuesType, TodoListBllType} from './redux/reducers/todoListReduce
 import {TasksStateType} from './redux/reducers/tasksReducer/tasks-reducer';
 import {TaskStatus} from './api/tasksAPI';
 import {
-    addTodoListsTC,
-    deleteTodoListsTC,
+    addTodoListTC,
+    deleteTodoListTC,
     getTodoListsTC,
-    updateTodoListsTC
+    updateTodoListTC
 } from './redux/reducers/todoListReducer/todolist-thunk';
 import {
     addTaskTC,
@@ -46,16 +46,16 @@ function App() {
     }, [dispatch])
 
     const removeTodolist = useCallback((id: string) => {
-        dispatch(deleteTodoListsTC(id))
+        dispatch(deleteTodoListTC(id))
     }, [dispatch])
     const changeFilter = useCallback((value: FilterValuesType, todolistId: string) => {
         dispatch(changeTodolistFilterAC(todolistId, value))
     }, [dispatch])
     const changeTodolistTitle = useCallback((title: string, id: string) => {
-        dispatch(updateTodoListsTC(id, title))
+        dispatch(updateTodoListTC(id, title))
     }, [dispatch])
     const addTodolist = useCallback((title: string) => {
-        dispatch(addTodoListsTC(title))
+        dispatch(addTodoListTC(title))
     }, [dispatch])
 
     return (

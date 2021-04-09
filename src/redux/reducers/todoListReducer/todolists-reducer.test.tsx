@@ -3,7 +3,12 @@ import {
     FilterValuesType, TodoListBllType,
     todoListsReducer
 } from './todolists-reducer';
-import {addTodolistAC, changeTodolistFilterAC, changeTodolistTitleAC, removeTodolistAC} from './todolist-actions';
+import {
+    addTodolistAC,
+    changeTodolistFilterAC,
+    changeTodolistTitleAC,
+    removeTodolistAC, setTodoListsAC,
+} from './todolist-actions';
 
 let todolistId1: string
 let todolistId2: string
@@ -54,4 +59,17 @@ test('todoList reducer should change todolist filter', () => {
     // Result
     expect(endState[0].filter).toBe(newFilter)
     expect(endState[1].filter).toBe('all')
+})
+
+test('todoList reducer should set todoLists', () => {
+    // Data
+    let newTodolists = todolists = [
+        {id: todolistId1, title: 'What to read', filter: 'all', order: 0, addedDate: ''},
+        {id: todolistId2, title: 'What to play', filter: 'all', order: 1, addedDate: ''}
+    ]
+    // Action
+    const endState = todoListsReducer(todolists, setTodoListsAC(newTodolists))
+    // Result
+    expect(endState[0].title).toBe('What to read')
+    expect(endState[1].title).toBe('What to play')
 })

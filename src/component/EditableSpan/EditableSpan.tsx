@@ -8,7 +8,6 @@ export type EditableSpanType = {
 }
 
 const EditableSpan = React.memo((props: EditableSpanType) => {
-    console.log('EditableSpan was called')
 
     const [editMode, setEditMode] = useState(false)
     const [title, setTitle] = useState(props.value)
@@ -29,6 +28,7 @@ const EditableSpan = React.memo((props: EditableSpanType) => {
                         variant={'outlined'}
                         value={ title }
                         className={s.inputTask}
+                        onKeyPress={ (e) => e.charCode === 13 && editSpan() }
                         autoFocus
                         onChange={ changeTitle }
                         onBlur={ editSpan }

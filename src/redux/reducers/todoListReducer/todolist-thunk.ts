@@ -1,24 +1,26 @@
 import {Dispatch} from 'redux';
-import {addTodolistAC, removeTodolistAC, setTodoListAC} from './todolist-actions';
+import {addTodolistAC, changeTodolistTitleAC, removeTodolistAC, setTodoListsAC} from './todolist-actions';
 import {todoListAPI} from '../../../api/todoAPI';
 
 export const getTodoListsTC = () => async (dispatch: Dispatch) => {
     let {data} = await todoListAPI.getTodoLists()
-    // @ts-ignore
-    dispatch(setTodoListAC(data))
+    dispatch(setTodoListsAC(data))
 }
 
-export const deleteTodoListsTC = (todoId: string) => (dispatch: Dispatch) => {
-    todoListAPI.deleteTodoList(todoId)
-    dispatch(removeTodolistAC(todoId))
+export const deleteTodoListTC = (todoId: string) => (dispatch: Dispatch) => {
+    todoListAPI.deleteTodoList(todoId).then(() => {
+        dispatch(removeTodolistAC(todoId))
+    })
 }
 
-export const addTodoListsTC = (title: string) => (dispatch: Dispatch) => {
-    todoListAPI.createTodoList(title)
-    dispatch(addTodolistAC(title))
+export const addTodoListTC = (title: string) => (dispatch: Dispatch) => {
+    todoListAPI.createTodoList(title).then(() => {
+        dispatch(addTodolistAC(title))
+    })
 }
 
-export const updateTodoListsTC = (todoId: string, title: string) => (dispatch: Dispatch) => {
-    todoListAPI.updateTodoList(todoId, title)
-    dispatch(addTodolistAC(title))
+export const updateTodoListTC = (todoId: string, title: string) => (dispatch: Dispatch) => {
+    todoListAPI.updateTodoList(todoId, title).then(() => {
+        dispatch(changeTodolistTitleAC(todoId, title))
+    })
 }
