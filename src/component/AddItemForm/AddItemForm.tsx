@@ -1,22 +1,21 @@
-import s from "./Todolist.module.css";
+import s from "../Todolist/Todolist.module.css";
 import React, {ChangeEvent, KeyboardEvent, useState} from "react";
 import {IconButton, TextField} from "@material-ui/core";
 import {AddBox} from "@material-ui/icons";
 
 export type AddItemFormType = {
     addItem: (title: string) => void
+    disabled?: boolean
 }
 
-export const AddItemForm = React.memo((props: AddItemFormType) => {
-
-    console.log('AddItemForm rendering')
+export const AddItemForm = React.memo(({addItem, disabled}: AddItemFormType) => {
 
     let [title, setTitle] = useState<string>("")
     let [error, setError] = useState<string | null>(null)
 
-    const addItem = () => {
+    const onAddItem = () => {
         if (title.trim() !== "") {
-            props.addItem(title)
+            addItem(title)
             setTitle("")
             setError(null)
         } else {
@@ -24,10 +23,10 @@ export const AddItemForm = React.memo((props: AddItemFormType) => {
             setTitle("")
         }
     }
-    const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => { setTitle(e.currentTarget.value) }
+    const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => setTitle(e.currentTarget.value)
     const onKeyPressHandler = (e: KeyboardEvent<HTMLInputElement>) => {
         if (e.charCode === 13) {
-            addItem()
+            onAddItem()
         }
     }
 
@@ -42,7 +41,7 @@ export const AddItemForm = React.memo((props: AddItemFormType) => {
                 error={ !!error }
                 helperText={ error }
             />
-            <IconButton color='primary'  onClick={ addItem }>
+            <IconButton disabled={disabled} color='primary'  onClick={ onAddItem }>
                 <AddBox />
             </IconButton>
         </div>

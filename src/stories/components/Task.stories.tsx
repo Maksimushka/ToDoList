@@ -3,7 +3,7 @@ import React from 'react';
 
 import {Meta, Story} from '@storybook/react/types-6-0';
 import {action} from '@storybook/addon-actions';
-import {Task, TaskPropsType} from '../../component/Task/Task';
+import {Task, TaskPropsType} from '../../component/Todolist/Task/Task';
 
 export default {
     title: 'Todolist/Task',

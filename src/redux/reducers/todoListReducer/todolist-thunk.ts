@@ -1,26 +1,46 @@
 import {Dispatch} from 'redux';
-import {addTodolistAC, changeTodolistTitleAC, removeTodolistAC, setTodoListsAC} from './todolist-actions';
+import {
+    addTodolistAC,
+    changeTodolistTitleAC,
+    removeTodolistAC,
+    setTodoListObjectStatusAC,
+    setTodoListsAC
+} from './todolist-actions';
 import {todoListAPI} from '../../../api/todoAPI';
+import {setLoadingStatusAC} from '../app-actions';
+import {handleServerAppError, handleServerNetworkError} from '../../../utils/error-utils';
 
 export const getTodoListsTC = () => async (dispatch: Dispatch) => {
+    dispatch(setLoadingStatusAC('loading'))
     let {data} = await todoListAPI.getTodoLists()
     dispatch(setTodoListsAC(data))
+    dispatch(setLoadingStatusAC('succeeded'))
 }
-
-export const deleteTodoListTC = (todoId: string) => (dispatch: Dispatch) => {
-    todoListAPI.deleteTodoList(todoId).then(() => {
-        dispatch(removeTodolistAC(todoId))
-    })
+export const deleteTodoListTC = (todoId: string) => async (dispatch: Dispatch) => {
+    dispatch(setLoadingStatusAC('loading'))
+    dispatch(setTodoListObjectStatusAC(todoId,'loading'))
+    await todoListAPI.deleteTodoList(todoId)
+    dispatch(removeTodolistAC(todoId))
+    dispatch(setLoadingStatusAC('succeeded'))
+    dispatch(setTodoListObjectStatusAC(todoId,'succeeded'))
 }
-
-export const addTodoListTC = (title: string) => (dispatch: Dispatch) => {
-    todoListAPI.createTodoList(title).then(() => {
-        dispatch(addTodolistAC(title))
-    })
+export const addTodoListTC = (title: string) => async (dispatch: Dispatch) => {
+    dispatch(setLoadingStatusAC('loading'))
+    try {
+        let {data} = await todoListAPI.createTodoList(title)
+        if (data.resultCode === 0) {
+            dispatch(addTodolistAC(data.data.item))
+            dispatch(setLoadingStatusAC('succeeded'))
+        } else {
+            handleServerAppError(data, dispatch)
+        }
+    } catch (e) {
+        handleServerNetworkError(e, dispatch)
+    }
 }
-
-export const updateTodoListTC = (todoId: string, title: string) => (dispatch: Dispatch) => {
-    todoListAPI.updateTodoList(todoId, title).then(() => {
-        dispatch(changeTodolistTitleAC(todoId, title))
-    })
+export const updateTodoListTC = (todoId: string, title: string) => async (dispatch: Dispatch) => {
+    dispatch(setLoadingStatusAC('loading'))
+    await todoListAPI.updateTodoList(todoId, title)
+    dispatch(changeTodolistTitleAC(todoId, title))
+    dispatch(setLoadingStatusAC('succeeded'))
 }

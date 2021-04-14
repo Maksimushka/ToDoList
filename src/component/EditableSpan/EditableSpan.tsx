@@ -13,6 +13,7 @@ const EditableSpan = React.memo((props: EditableSpanType) => {
     const [title, setTitle] = useState(props.value)
     const editInput = () => {
         setEditMode(true)
+        setTitle(props.value)
     }
     const editSpan = () => {
         setEditMode(false)
@@ -33,7 +34,7 @@ const EditableSpan = React.memo((props: EditableSpanType) => {
                         onChange={ changeTitle }
                         onBlur={ editSpan }
                     />
-                : <span className={s.title} onDoubleClick={ editInput } >{ title }</span>
+                : <span className={s.title} onDoubleClick={ editInput } >{ props.value }</span>
 })
 
 export default EditableSpan;

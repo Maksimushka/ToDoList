@@ -1,6 +1,6 @@
 import axios from "axios"
 
-type ResponseType<D = {}> = {
+export type ResponseType<D = {}> = {
     resultCode: number
     messages: string[],
     data: D

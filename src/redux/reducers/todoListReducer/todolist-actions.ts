@@ -1,54 +1,43 @@
-import {v1} from 'uuid';
-import {FilterValuesType, TodoListBllType} from './todolists-reducer';
+import {FilterValuesType} from './todolists-reducer';
 import {TodoListType} from '../../../api/todoAPI';
+import {RequestStatusType} from '../app-reducer';
 
-// TYPES
-export type RemoveTodolistActionType = {
-    type: 'REMOVE_TODOLIST'
-    id: string
-}
-export type AddTodolistActionType = {
-    type: 'ADD_TODOLIST'
-    title: string
-    todoId: string
-}
-export type ChangeTodolistTitleActionType = {
-    type: 'Change_TODOLIST_TITLE'
-    id: string
-    title: string
-}
-export type ChangeTodolistFilterActionType = {
-    type: 'CHANGE_TODOLIST_FILTER'
-    id: string
-    filter: FilterValuesType
-}
-export type SetTodoListsActionType = {
-    type: 'SET_TODOLISTS'
-    todoLists: TodoListType[]
-}
+export type TodoListsActionsType = RemoveTodolistActionType
+    | AddTodolistActionType
+    | ReturnType<typeof changeTodolistTitleAC>
+    | ReturnType<typeof changeTodolistFilterAC>
+    | ReturnType<typeof setTodoListObjectStatusAC>
+    | SetTodoListsActionType
+
+export type AddTodolistActionType = ReturnType<typeof addTodolistAC>
+export type RemoveTodolistActionType = ReturnType<typeof removeTodolistAC>
+export type SetTodoListsActionType = ReturnType<typeof setTodoListsAC>
 
 // ACTION CREATORS
-export const removeTodolistAC = (id: string): RemoveTodolistActionType => ({
+export const removeTodolistAC = (id: string) => ({
     type: 'REMOVE_TODOLIST',
-    id: id,
-})
-export const addTodolistAC = (title: string): AddTodolistActionType => ({
+    id
+} as const )
+export const addTodolistAC = (todoList: TodoListType) => ({
     type: 'ADD_TODOLIST',
-    title: title,
-    todoId: v1()
-})
-export const changeTodolistTitleAC = (id: string, title: string): ChangeTodolistTitleActionType => ({
+    todoList
+} as const)
+export const changeTodolistTitleAC = (id: string, title: string) => ({
     type: 'Change_TODOLIST_TITLE',
     id,
     title
-})
-export const changeTodolistFilterAC = (id: string, filter: FilterValuesType): ChangeTodolistFilterActionType => ({
+} as const)
+export const changeTodolistFilterAC = (id: string, filter: FilterValuesType) => ({
     type: 'CHANGE_TODOLIST_FILTER',
     id,
     filter
-})
-export const setTodoListsAC = (todoLists: TodoListType[]): SetTodoListsActionType => ({
+} as const)
+export const setTodoListsAC = (todoLists: TodoListType[]) => ({
     type: 'SET_TODOLISTS',
     todoLists
-})
-
+} as const)
+export const setTodoListObjectStatusAC = (todoId: string, status: RequestStatusType) => ({
+    type: 'SET_TODOLIST_OBJECT_STATUS',
+    todoId,
+    status
+} as const)
