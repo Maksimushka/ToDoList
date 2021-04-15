@@ -1,8 +1,13 @@
 import {TaskType} from '../../../api/tasksAPI';
 import {TasksActionsType} from './tasks-actions';
+import {RequestStatusType} from '../app-reducer';
+
+export type ObjectStatusType = TaskType & {
+    objectStatus: RequestStatusType
+}
 
 export type TasksStateType = {
-    [key: string]: TaskType[]
+    [key: string]: ObjectStatusType[]
 }
 
 const initialState: TasksStateType = {}
@@ -11,13 +16,13 @@ export const tasksReducer = (state: TasksStateType = initialState, action: Tasks
     let copyState = {...state}
     switch (action.type) {
         case 'SET_TASKS': {
-            copyState[action.todoId] = action.tasks
+            copyState[action.todoId] = action.tasks.map(el => ({...el, objectStatus: 'idle'}))
             return copyState
         }
         case 'ADD_TASK': {
             return {
                 ...state,
-                [action.task.todoListId]: [action.task, ...state[action.task.todoListId]]
+                [action.task.todoListId]: [{...action.task, objectStatus: 'idle'}, ...state[action.task.todoListId]]
             }
         }
         case 'REMOVE_TASK': {
@@ -26,7 +31,6 @@ export const tasksReducer = (state: TasksStateType = initialState, action: Tasks
                 [action.todoID]: state[action.todoID].filter( t => t.id !== action.id)
             }
         }
-
         case 'UPDATE_TASK': {
             return {
                 ...state,
@@ -47,6 +51,14 @@ export const tasksReducer = (state: TasksStateType = initialState, action: Tasks
                 copyState[el.id] = []
             })
             return copyState
+        }
+        case 'SET_TASK_OBJECT_STATUS': {
+            return {
+                ...state,
+                [action.todoId]: state[action.todoId].map(el => {
+                    return el.id === action.taskId ? {...el, objectStatus: action.status} : el
+                })
+            }
         }
         default: {
             return state

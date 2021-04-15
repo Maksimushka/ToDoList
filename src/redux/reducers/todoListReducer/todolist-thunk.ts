@@ -12,17 +12,31 @@ import {handleServerAppError, handleServerNetworkError} from '../../../utils/err
 
 export const getTodoListsTC = () => async (dispatch: Dispatch) => {
     dispatch(setLoadingStatusAC('loading'))
-    let {data} = await todoListAPI.getTodoLists()
-    dispatch(setTodoListsAC(data))
-    dispatch(setLoadingStatusAC('succeeded'))
+    try {
+        let {data} = await todoListAPI.getTodoLists()
+        dispatch(setTodoListsAC(data))
+        dispatch(setLoadingStatusAC('succeeded'))
+    } catch (e) {
+        handleServerNetworkError(e, dispatch)
+    }
+
 }
 export const deleteTodoListTC = (todoId: string) => async (dispatch: Dispatch) => {
     dispatch(setLoadingStatusAC('loading'))
-    dispatch(setTodoListObjectStatusAC(todoId,'loading'))
-    await todoListAPI.deleteTodoList(todoId)
-    dispatch(removeTodolistAC(todoId))
-    dispatch(setLoadingStatusAC('succeeded'))
-    dispatch(setTodoListObjectStatusAC(todoId,'succeeded'))
+    dispatch(setTodoListObjectStatusAC(todoId, 'loading'))
+    try {
+        let {data} = await todoListAPI.deleteTodoList(todoId)
+        if (data.resultCode === 0) {
+            dispatch(removeTodolistAC(todoId))
+            dispatch(setLoadingStatusAC('succeeded'))
+            dispatch(setTodoListObjectStatusAC(todoId, 'succeeded'))
+        } else {
+            handleServerAppError(data, dispatch)
+        }
+    } catch (e) {
+        handleServerNetworkError(e, dispatch)
+    }
+
 }
 export const addTodoListTC = (title: string) => async (dispatch: Dispatch) => {
     dispatch(setLoadingStatusAC('loading'))
@@ -40,7 +54,17 @@ export const addTodoListTC = (title: string) => async (dispatch: Dispatch) => {
 }
 export const updateTodoListTC = (todoId: string, title: string) => async (dispatch: Dispatch) => {
     dispatch(setLoadingStatusAC('loading'))
-    await todoListAPI.updateTodoList(todoId, title)
-    dispatch(changeTodolistTitleAC(todoId, title))
-    dispatch(setLoadingStatusAC('succeeded'))
+    dispatch(setTodoListObjectStatusAC(todoId, 'loading'))
+    try {
+        let {data} = await todoListAPI.updateTodoList(todoId, title)
+        if (data.resultCode === 0) {
+            dispatch(changeTodolistTitleAC(todoId, title))
+            dispatch(setLoadingStatusAC('succeeded'))
+            dispatch(setTodoListObjectStatusAC(todoId, 'succeeded'))
+        } else {
+            handleServerAppError(data, dispatch)
+        }
+    } catch (e) {
+        handleServerNetworkError(e, dispatch)
+    }
 }

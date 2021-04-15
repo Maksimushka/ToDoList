@@ -3,9 +3,10 @@ import {Task} from '../Task/Task';
 import {deleteTaskTC, updateTaskTC,} from '../../../redux/reducers/tasksReducer/tasks-thunk';
 import {TaskStatus, TaskType} from '../../../api/tasksAPI';
 import {useDispatch} from 'react-redux';
+import {ObjectStatusType} from '../../../redux/reducers/tasksReducer/tasks-reducer';
 
 type TasksPropsType = {
-    tasks: TaskType[]
+    tasks: ObjectStatusType[]
     todoId: string
 }
 
@@ -28,6 +29,7 @@ const Tasks: React.FC<TasksPropsType> = React.memo((props) => {
             {
                 props.tasks.map(el => {
                     return <Task
+                        taskObjectStatus={el.objectStatus}
                         taskId={el.id}
                         title={el.title}
                         status={el.status}
