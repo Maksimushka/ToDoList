@@ -1,6 +1,6 @@
 import {TodoListsActionsType} from './todolist-actions';
 import {TodoListType} from '../../../api/todoAPI';
-import {RequestStatusType} from '../app-reducer';
+import {RequestStatusType} from '../appReducer/app-reducer';
 
 export type FilterValuesType = 'all' | 'active' | 'completed';
 export type TodoListBllType = TodoListType & {

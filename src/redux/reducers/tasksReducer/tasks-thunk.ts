@@ -9,7 +9,7 @@ import {
     updateTaskAC
 } from './tasks-actions';
 import {RootStoreType} from '../../store';
-import {setLoadingStatusAC} from '../app-actions';
+import {setLoadingStatusAC} from '../appReducer/app-actions';
 import {setTodoListObjectStatusAC} from '../todoListReducer/todolist-actions';
 import {handleServerAppError, handleServerNetworkError} from '../../../utils/error-utils';
 

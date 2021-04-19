@@ -4,7 +4,7 @@ import {Checkbox, IconButton} from '@material-ui/core';
 import EditableSpan from '../../EditableSpan/EditableSpan';
 import {Delete} from '@material-ui/icons';
 import {TaskStatus} from '../../../api/tasksAPI';
-import {RequestStatusType} from '../../../redux/reducers/app-reducer';
+import {RequestStatusType} from '../../../redux/reducers/appReducer/app-reducer';
 
 export type TaskPropsType = {
     taskId: string

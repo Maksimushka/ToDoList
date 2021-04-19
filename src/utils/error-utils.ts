@@ -2,10 +2,10 @@ import { Dispatch } from 'redux';
 import {ResponseType} from '../api/todoAPI'
 import {
     setErrorAC,
-    SetErrorACType,
+    SetErrorAType,
     setLoadingStatusAC,
-    SetLoadingStatusACType
-} from '../redux/reducers/app-actions';
+    SetLoadingStatusAType
+} from '../redux/reducers/appReducer/app-actions';
 
 // generic function
 export const handleServerAppError = <T>(data: ResponseType<T>, dispatch: ErrorUtilsDispatchType) => {
@@ -22,4 +22,4 @@ export const handleServerNetworkError = (error: {message: string}, dispatch: Err
     dispatch(setLoadingStatusAC('failed'))
 }
 
-type ErrorUtilsDispatchType = Dispatch<SetErrorACType | SetLoadingStatusACType>
+type ErrorUtilsDispatchType = Dispatch<SetErrorAType | SetLoadingStatusAType>

@@ -1,40 +1,38 @@
-import React, {useCallback, useEffect} from 'react';
-import {TodoList} from './component/Todolist/Todolist';
-import {AddItemForm} from './component/AddItemForm/AddItemForm';
+import React, {useEffect} from 'react';
 import {
-    AppBar,
-    Button,
-    Container,
-    Grid,
-    IconButton,
-    LinearProgress,
-    Paper,
-    Toolbar,
-    Typography
+    AppBar, Button, CircularProgress, Container, IconButton,
+    LinearProgress, Toolbar, Typography
 } from '@material-ui/core';
 import {Menu} from '@material-ui/icons';
 import {useDispatch, useSelector} from 'react-redux';
 import {RootStoreType} from './redux/store';
-import {TodoListBllType} from './redux/reducers/todoListReducer/todolists-reducer';
-import {TasksStateType} from './redux/reducers/tasksReducer/tasks-reducer';
-import {addTodoListTC, getTodoListsTC,} from './redux/reducers/todoListReducer/todolist-thunk';
-import {AppReducerStateType} from './redux/reducers/app-reducer';
+import {AppReducerStateType} from './redux/reducers/appReducer/app-reducer';
 import ErrorSnackbar from './component/ErrorSnackbar/ErrorSnackBar';
+import TodoListsList from './component/TodoListsList/TodoListsList';
+import { Route, Switch, Redirect} from 'react-router-dom';
+import Login from './component/Login/Login';
+import {initializeAppTC} from './redux/reducers/appReducer/app-actions';
+import {setLogOutTC} from './redux/reducers/authReducer/auth-actions';
+import {authReducerStateType} from './redux/reducers/authReducer/auth-reducer';
 
 function App() {
+    const {status, isInitialized} = useSelector<RootStoreType, AppReducerStateType>(state => state.app)
+    const {isLogged} = useSelector<RootStoreType, authReducerStateType>(state => state.auth)
     const dispatch = useDispatch()
-
+    const demo = false
     useEffect(() => {
-        dispatch(getTodoListsTC())
+        dispatch(initializeAppTC())
     }, [dispatch])
 
-    const tasks = useSelector<RootStoreType, TasksStateType>((state) => state.tasks)
-    const todoLists = useSelector<RootStoreType, TodoListBllType[]>((state) => state.todoLists)
-    const {status} = useSelector<RootStoreType, AppReducerStateType>(state => state.app)
+    const onLogOut = () => {
+        dispatch(setLogOutTC())
+    }
 
-    const addTodolist = useCallback((title: string) => {
-        dispatch(addTodoListTC(title))
-    }, [dispatch])
+    if (!isInitialized) {
+        return <div style={{position: 'fixed', top: '30%', width: '100%', textAlign: 'center'}}>
+                <CircularProgress />
+            </div>
+    }
 
     return (
         <div>
@@ -47,37 +45,18 @@ function App() {
                     <Typography>
                         News
                     </Typography>
-                    <Button color={'inherit'}>Login</Button>
+                    {isLogged && <Button onClick={onLogOut} color={'inherit'}>Log out</Button>}
                 </Toolbar>
+                {status === 'loading' && <LinearProgress />}
             </AppBar>
-            {status === 'loading' && <LinearProgress />}
-
             <Container fixed>
-                <Grid container style={{padding: '30px'}}>
-                    <AddItemForm addItem={addTodolist}/>
-                </Grid>
-                <Grid container>
-                    {
-                        todoLists.map(tl => {
-                            let tasksForTodolist = tasks[tl.id];
-
-                            return <Grid key={`grid/${tl.id}`} style={{marginRight: '35px', marginBottom: '35px'}} item>
-                                <Paper key={`paper/${tl.id}`} style={{padding: '10px'}}>
-                                    <TodoList
-                                        objectStatus={tl.objectStatus}
-                                        key={tl.id}
-                                        id={tl.id}
-                                        title={tl.title}
-                                        tasks={tasksForTodolist}
-                                        filter={tl.filter}
-                                    />
-                                </Paper>
-                            </Grid>
-                        })
-                    }
-                </Grid>
+                <Switch>
+                    <Route exact path={'/'} render={() => <TodoListsList demo={demo} /> }/>
+                    <Route path={'/login'} render={() => <Login /> }/>
+                    <Route path={ '/404' } render={ () => <h1>404: PAGE NOT FOUND</h1> }/>
+                    <Redirect from={'*'} to={'/404'}/>
+                </Switch>
             </Container>
-
         </div>
     );
 }

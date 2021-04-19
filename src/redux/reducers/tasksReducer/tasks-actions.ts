@@ -4,7 +4,7 @@ import {
     RemoveTodolistActionType,
     SetTodoListsActionType
 } from '../todoListReducer/todolist-actions';
-import {RequestStatusType} from '../app-reducer';
+import {RequestStatusType} from '../appReducer/app-reducer';
 
 // TYPES
 export type TasksActionsType = RemoveTaskActionType | AddTaskActionType

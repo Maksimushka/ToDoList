@@ -1,6 +1,6 @@
 import {TaskType} from '../../../api/tasksAPI';
 import {TasksActionsType} from './tasks-actions';
-import {RequestStatusType} from '../app-reducer';
+import {RequestStatusType} from '../appReducer/app-reducer';
 
 export type ObjectStatusType = TaskType & {
     objectStatus: RequestStatusType

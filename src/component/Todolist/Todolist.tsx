@@ -11,7 +11,7 @@ import {useDispatch} from 'react-redux';
 import {deleteTodoListTC, updateTodoListTC} from '../../redux/reducers/todoListReducer/todolist-thunk';
 import {changeTodolistFilterAC} from '../../redux/reducers/todoListReducer/todolist-actions';
 import Tasks from './Tasks/Tasks';
-import {RequestStatusType} from '../../redux/reducers/app-reducer';
+import {RequestStatusType} from '../../redux/reducers/appReducer/app-reducer';
 import {ObjectStatusType} from '../../redux/reducers/tasksReducer/tasks-reducer';
 
 type PropsType = {

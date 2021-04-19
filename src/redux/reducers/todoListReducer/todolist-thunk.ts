@@ -7,7 +7,7 @@ import {
     setTodoListsAC
 } from './todolist-actions';
 import {todoListAPI} from '../../../api/todoAPI';
-import {setLoadingStatusAC} from '../app-actions';
+import {setLoadingStatusAC} from '../appReducer/app-actions';
 import {handleServerAppError, handleServerNetworkError} from '../../../utils/error-utils';
 
 export const getTodoListsTC = () => async (dispatch: Dispatch) => {
