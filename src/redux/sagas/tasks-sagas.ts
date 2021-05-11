@@ -7,7 +7,7 @@ import {
     updateTaskAC
 } from '../reducers/tasksReducer/tasks-actions';
 import {RootStoreType} from '../store';
-import {setLoadingStatusAC} from '../reducers/appReducer/app-actions';
+import {getAppError, getNetworkError, setLoadingStatusAC} from '../reducers/appReducer/app-actions';
 import {tasksAPI} from '../../api/tasksAPI';
 import {ActionType} from '../../utils/types';
 import {call, put, select, takeEvery} from 'redux-saga/effects';
@@ -42,11 +42,12 @@ export function* updateTaskWorker({payload}: ActionType<{todoId: string, taskId:
             yield put(setLoadingStatusAC('succeeded'))
             yield put(setTaskObjectStatusAC(todoId, taskId, 'succeeded'))
         } else {
-            // handleServerAppError(data, dispatch)
+            yield put(getAppError(data))
             yield put(setTaskObjectStatusAC(todoId, taskId, 'failed'))
         }
     } catch (e) {
-        alert(e)
+        yield put(getNetworkError(e.message))
+        yield put(setTaskObjectStatusAC(todoId, taskId, 'failed'))
     }
 }
 export function* removeTaskWorker({payload}: ActionType<{todoId: string, taskId: string}>) {

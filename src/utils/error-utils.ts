@@ -1,25 +1,32 @@
-import { Dispatch } from 'redux';
 import {ResponseType} from '../api/todoAPI'
 import {
+    appActionsType,
     setErrorAC,
-    SetErrorAType,
     setLoadingStatusAC,
-    SetLoadingStatusAType
 } from '../redux/reducers/appReducer/app-actions';
+import {put, takeEvery} from 'redux-saga/effects';
+import {ActionType} from './types';
 
 // generic function
-export const handleServerAppError = <T>(data: ResponseType<T>, dispatch: ErrorUtilsDispatchType) => {
+export function* handleServerAppError<T>({payload}: ActionType<{data: ResponseType<T>}>) {
+    const {data} = payload
     if (data.messages.length) {
-        dispatch(setErrorAC(data.messages[0]))
+        yield put(setErrorAC(data.messages[0]))
     } else {
-        dispatch(setErrorAC('Some error occurred'))
+        yield put(setErrorAC('Some error occurred'))
     }
-    dispatch(setLoadingStatusAC('failed'))
+    yield put(setLoadingStatusAC('failed'))
 }
 
-export const handleServerNetworkError = (error: {message: string}, dispatch: ErrorUtilsDispatchType) => {
-    dispatch(setErrorAC(error.message))
-    dispatch(setLoadingStatusAC('failed'))
+export function* handleServerNetworkError({payload}: ActionType<{error: string}>) {
+    const {error} = payload
+    yield put(setErrorAC(error))
+    yield put(setLoadingStatusAC('failed'))
 }
 
-type ErrorUtilsDispatchType = Dispatch<SetErrorAType | SetLoadingStatusAType>
+export function* watchHandleServerNetworkError() {
+    yield takeEvery(appActionsType.getNetworkError, handleServerNetworkError)
+}
+export function* watchHandleServerAppError() {
+    yield takeEvery(appActionsType.getAppError, handleServerAppError)
+}
