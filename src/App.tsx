@@ -11,9 +11,9 @@ import ErrorSnackbar from './component/ErrorSnackbar/ErrorSnackBar';
 import TodoListsList from './component/TodoListsList/TodoListsList';
 import { Route, Switch, Redirect} from 'react-router-dom';
 import Login from './component/Login/Login';
-import {initializeAppTC} from './redux/reducers/appReducer/app-actions';
 import {setLogOutTC} from './redux/reducers/authReducer/auth-actions';
 import {authReducerStateType} from './redux/reducers/authReducer/auth-reducer';
+import {initializeApp} from './redux/reducers/appReducer/app-actions';
 
 function App() {
     const {status, isInitialized} = useSelector<RootStoreType, AppReducerStateType>(state => state.app)
@@ -21,7 +21,7 @@ function App() {
     const dispatch = useDispatch()
     const demo = false
     useEffect(() => {
-        dispatch(initializeAppTC())
+        dispatch(initializeApp())
     }, [dispatch])
 
     const onLogOut = () => {
