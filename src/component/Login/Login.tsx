@@ -12,9 +12,9 @@ import {
 import * as Yup from 'yup';
 import {useFormik} from 'formik';
 import {useDispatch, useSelector} from 'react-redux';
-import {setLoginTC} from '../../redux/reducers/authReducer/auth-actions';
 import {RootStoreType} from '../../redux/store';
 import {Redirect} from 'react-router-dom';
+import {login} from '../../redux/reducers/authReducer/auth-actions';
 
 const Login = () => {
     const {isLogged} = useSelector((state: RootStoreType) => state.auth )
@@ -31,7 +31,7 @@ const Login = () => {
             password: Yup.string().min(2, 'Password must be 2 characters or more').required('Required')
         }),
         onSubmit: values => {
-            dispatch(setLoginTC(values))
+            dispatch(login(values))
             formik.resetForm()
         }
     })

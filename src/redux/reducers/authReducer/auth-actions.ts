@@ -1,47 +1,22 @@
-import {authAPI, LoginParamsType} from '../../../api/todoAPI';
-import {Dispatch} from 'redux';
-import {setLoadingStatusAC} from '../appReducer/app-actions';
-import {handleServerAppError, handleServerNetworkError} from '../../../utils/error-utils';
-
 // TYPES
+import {LoginParamsType} from '../../../api/todoAPI';
+
 export enum authActionsType {
     setIsLogged = 'AUTH/SET_LOADING_STATUS',
+    login = 'AUTH/LOGIN',
+    logOut = 'AUTH/LOGOUT',
 }
-export type authReducerActionsType = SetIsLoggedAType
+export type authReducerActionsType = SetIsLoggedAType | logOutAType | loginAType
 export type SetIsLoggedAType = ReturnType<typeof setIsLoggedAC>
+export type logOutAType = ReturnType<typeof logOut>
+export type loginAType = ReturnType<typeof login>
 
 // ACTION CREATORS
+export const login = (payload: LoginParamsType) => ({
+    type: authActionsType.login, payload
+} as const)
+export const logOut = () => ({type: authActionsType.logOut} as const)
 export const setIsLoggedAC = (value: boolean) => ({
     type: authActionsType.setIsLogged,
     value
 } as const)
-
-// THUNK CREATORS
-export const setLoginTC = (values: LoginParamsType) => async (dispatch: Dispatch) => {
-    dispatch(setLoadingStatusAC('loading'))
-    try {
-        let {data} = await authAPI.login(values)
-        if (data.resultCode === 0) {
-            dispatch(setIsLoggedAC(true))
-            dispatch(setLoadingStatusAC('succeeded'))
-        } else {
-            handleServerAppError(data, dispatch)
-        }
-    } catch (e) {
-        handleServerNetworkError(e, dispatch)
-    }
-}
-export const setLogOutTC = () => async (dispatch: Dispatch) => {
-    dispatch(setLoadingStatusAC('loading'))
-    try {
-        let {data} = await authAPI.logOut()
-        if (data.resultCode === 0) {
-            dispatch(setIsLoggedAC(false))
-            dispatch(setLoadingStatusAC('succeeded'))
-        } else {
-            handleServerAppError(data, dispatch)
-        }
-    } catch (e) {
-        handleServerNetworkError(e, dispatch)
-    }
-}
