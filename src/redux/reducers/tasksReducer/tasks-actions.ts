@@ -7,7 +7,20 @@ import {
 import {RequestStatusType} from '../appReducer/app-reducer';
 
 // TYPES
-export type TasksActionsType = RemoveTaskActionType | AddTaskActionType
+export enum tasksActionTypes {
+    fetchUpdateTask = 'TASKS/FETCH_UPDATE_TASK',
+    fetchRemoveTask = 'TASKS/FETCH_REMOVE_TASK',
+    fetchAddTask = 'TASKS/FETCH_ADD_TASK',
+    getTasks = 'TASKS/GET_TASKS',
+
+    removeTask = 'TASKS/REMOVE_TASK',
+    addTask = 'TASKS/ADD_TASK',
+    updateTask = 'TASKS/UPDATE_TASK',
+    setTaskObjectStatus = 'TASKS/SET_TASK_OBJECT_STATUS',
+    setTasks = 'TASKS/SET_TASKS',
+}
+
+export type TasksReducerActionsType = RemoveTaskActionType | AddTaskActionType
     | UpdateTaskAType | AddTodolistActionType | RemoveTodolistActionType
     | SetTodoListsActionType | SetTasksActionType | SetTaskObjectStatusActionType
 
@@ -27,18 +40,31 @@ export type UpdateDomainTaskModelType = {
 }
 
 // ACTION CREATORS
+export const fetchRemoveTask = (todoId: string, taskId: string) => ({
+    type: tasksActionTypes.fetchRemoveTask, payload: {taskId, todoId,}
+} as const)
+export const fetchAddTask = (todoId: string, title: string) => ({
+    type: tasksActionTypes.fetchAddTask, payload: {todoId, title}
+} as const)
+export const fetchUpdateTask = (todoId: string, taskId: string, model: UpdateDomainTaskModelType) => ({
+    type: tasksActionTypes.fetchUpdateTask, payload: {taskId, todoId, model}
+} as const)
+export const getTasks = (todoId: string) => ({
+    type: tasksActionTypes.getTasks, payload: {todoId}
+} as const)
+
 export const removeTaskAC = (todoID: string, id: string,) => ({
-    type: 'REMOVE_TASK', id, todoID
+    type: tasksActionTypes.removeTask, id, todoID
 } as const)
 export const addTaskAC = (task: TaskType) => ({
-    type: 'ADD_TASK', task
+    type: tasksActionTypes.addTask, task
 } as const)
 export const updateTaskAC = (todoId: string, id: string, model: UpdateDomainTaskModelType) => ({
-    type: 'UPDATE_TASK', todoId, id, model
+    type: tasksActionTypes.updateTask, todoId, id, model
 } as const)
 export const setTasksAC = (todoId: string, tasks: TaskType[]) => ({
-    type: 'SET_TASKS', todoId, tasks
+    type: tasksActionTypes.setTasks, todoId, tasks
 } as const)
 export const setTaskObjectStatusAC = (todoId: string, taskId: string, status: RequestStatusType) => ({
-    type: 'SET_TASK_OBJECT_STATUS', todoId, status, taskId
+    type: tasksActionTypes.setTaskObjectStatus, todoId, status, taskId
 } as const)

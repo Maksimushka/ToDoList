@@ -6,7 +6,6 @@ import {Button, IconButton} from '@material-ui/core';
 import {Delete} from '@material-ui/icons';
 import {TaskStatus} from '../../api/tasksAPI';
 import {FilterValuesType} from '../../redux/reducers/todoListReducer/todolists-reducer';
-import {addTaskTC, getTasksTC,} from '../../redux/reducers/tasksReducer/tasks-thunk';
 import {useDispatch} from 'react-redux';
 import {
     changeTodolistFilterAC,
@@ -16,6 +15,7 @@ import {
 import Tasks from './Tasks/Tasks';
 import {RequestStatusType} from '../../redux/reducers/appReducer/app-reducer';
 import {ObjectStatusType} from '../../redux/reducers/tasksReducer/tasks-reducer';
+import {fetchAddTask, getTasks} from '../../redux/reducers/tasksReducer/tasks-actions';
 
 type PropsType = {
     objectStatus: RequestStatusType
@@ -30,11 +30,11 @@ export const TodoList = React.memo((props: PropsType) => {
 
     const dispatch = useDispatch()
     useEffect(() => {
-        dispatch(getTasksTC(id))
+        dispatch(getTasks(id))
     }, [dispatch, id])
 
     const addTask = useCallback((title: string, todolistId: string) => {
-        dispatch(addTaskTC(todolistId, title))
+        dispatch(fetchAddTask(todolistId, title))
     }, [dispatch])
     const removeTodoList = useCallback((id: string) => {
         dispatch(fetchRemoveTodoList(id))
