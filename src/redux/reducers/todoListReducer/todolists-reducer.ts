@@ -1,4 +1,4 @@
-import {TodoListsActionsType} from './todolist-actions';
+import {todoListsActionTypes, TodoListsReducerActionsType} from './todolist-actions';
 import {TodoListType} from '../../../api/todoAPI';
 import {RequestStatusType} from '../appReducer/app-reducer';
 
@@ -10,24 +10,24 @@ export type TodoListBllType = TodoListType & {
 
 const initialState: TodoListBllType[] = []
 
-export const todoListsReducer = (state: TodoListBllType[] = initialState, action: TodoListsActionsType): TodoListBllType[] => {
+export const todoListsReducer = (state: TodoListBllType[] = initialState, action: TodoListsReducerActionsType): TodoListBllType[] => {
     switch (action.type) {
-        case 'REMOVE_TODOLIST': {
+        case todoListsActionTypes.removeTodolist: {
             return state.filter(tl => tl.id !== action.id)
         }
-        case 'ADD_TODOLIST': {
+        case todoListsActionTypes.addTodolist: {
             return [{...action.todoList,  filter: 'all', objectStatus: 'idle'}, ...state,]
         }
-        case 'Change_TODOLIST_TITLE': {
+        case todoListsActionTypes.changeTodolistTitle: {
             return state.map(el => (el.id === action.id) ? {...el, title: action.title} : el)
         }
-        case 'CHANGE_TODOLIST_FILTER': {
+        case todoListsActionTypes.changeTodolistFilter: {
             return state.map(el => (el.id === action.id) ? {...el, filter: action.filter} : el)
         }
-        case 'SET_TODOLISTS': {
+        case todoListsActionTypes.setTodoLists: {
             return action.todoLists.map( el => ({...el, filter: 'all', objectStatus: 'idle'}) )
         }
-        case 'SET_TODOLIST_OBJECT_STATUS': {
+        case todoListsActionTypes.setTodoListObjectStatus: {
             return state.map(el => el.id === action.todoId ? {...el, objectStatus: action.status} : el)
         }
         default:

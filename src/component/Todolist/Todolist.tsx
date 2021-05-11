@@ -8,8 +8,11 @@ import {TaskStatus} from '../../api/tasksAPI';
 import {FilterValuesType} from '../../redux/reducers/todoListReducer/todolists-reducer';
 import {addTaskTC, getTasksTC,} from '../../redux/reducers/tasksReducer/tasks-thunk';
 import {useDispatch} from 'react-redux';
-import {deleteTodoListTC, updateTodoListTC} from '../../redux/reducers/todoListReducer/todolist-thunk';
-import {changeTodolistFilterAC} from '../../redux/reducers/todoListReducer/todolist-actions';
+import {
+    changeTodolistFilterAC,
+    fetchRemoveTodoList,
+    UpdateTodoList
+} from '../../redux/reducers/todoListReducer/todolist-actions';
 import Tasks from './Tasks/Tasks';
 import {RequestStatusType} from '../../redux/reducers/appReducer/app-reducer';
 import {ObjectStatusType} from '../../redux/reducers/tasksReducer/tasks-reducer';
@@ -34,13 +37,13 @@ export const TodoList = React.memo((props: PropsType) => {
         dispatch(addTaskTC(todolistId, title))
     }, [dispatch])
     const removeTodoList = useCallback((id: string) => {
-        dispatch(deleteTodoListTC(id))
+        dispatch(fetchRemoveTodoList(id))
     }, [dispatch])
     const changeFilter = useCallback((value: FilterValuesType, todolistId: string) => {
         dispatch(changeTodolistFilterAC(todolistId, value))
     }, [dispatch])
-    const changeTodolistTitle = useCallback((title: string, id: string) => {
-        dispatch(updateTodoListTC(id, title))
+    const changeTodolistTitle = useCallback((title: string, todoId: string) => {
+        dispatch(UpdateTodoList({todoId, title}))
     }, [dispatch])
 
     const onChangeFilter = useCallback((filter: FilterValuesType) => {

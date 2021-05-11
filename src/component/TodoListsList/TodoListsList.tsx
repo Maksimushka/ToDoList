@@ -3,9 +3,9 @@ import {Grid, Paper} from '@material-ui/core';
 import {AddItemForm} from '../AddItemForm/AddItemForm';
 import {TodoList} from '../Todolist/Todolist';
 import {useDispatch, useSelector} from 'react-redux';
-import {addTodoListTC, getTodoListsTC} from '../../redux/reducers/todoListReducer/todolist-thunk';
 import {RootStoreType} from '../../redux/store';
 import {Redirect} from 'react-router-dom';
+import {fetchAddTodoList, getTodoLists} from '../../redux/reducers/todoListReducer/todolist-actions';
 
 type TodoListsListPropsType = {
     demo: boolean
@@ -21,11 +21,11 @@ const TodoListsList = ({demo}: TodoListsListPropsType) => {
         if (demo || !isLogged) {
             return
         }
-        dispatch(getTodoListsTC())
+        dispatch(getTodoLists())
     }, [dispatch, demo, isLogged])
 
     const addTodolist = useCallback((title: string) => {
-        dispatch(addTodoListTC(title))
+        dispatch(fetchAddTodoList(title))
     }, [dispatch])
 
     if (!isLogged) {

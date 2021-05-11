@@ -1,7 +1,7 @@
 import React, {useCallback} from 'react';
 import {Task} from '../Task/Task';
 import {deleteTaskTC, updateTaskTC,} from '../../../redux/reducers/tasksReducer/tasks-thunk';
-import {TaskStatus, TaskType} from '../../../api/tasksAPI';
+import {TaskStatus} from '../../../api/tasksAPI';
 import {useDispatch} from 'react-redux';
 import {ObjectStatusType} from '../../../redux/reducers/tasksReducer/tasks-reducer';
 
